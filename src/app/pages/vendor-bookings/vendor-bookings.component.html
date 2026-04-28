@@ -1,0 +1,98 @@
+<div class="bookings-page">
+  <div class="page-header">
+    <h1>Booking Requests</h1>
+
+    <div class="filter-tabs">
+      <button
+        *ngFor="let s of statuses"
+        [class.active]="filterStatus === s"
+        (click)="filterStatus = s; load()"
+      >
+        {{ s || 'All' }}
+      </button>
+    </div>
+  </div>
+
+  <div class="loading" *ngIf="loading">Loading bookings...</div>
+  <p class="error" *ngIf="error">{{ error }}</p>
+
+  <div class="bookings-list" *ngIf="!loading">
+
+    <div class="empty-state" *ngIf="bookings.length === 0">
+      <p>No bookings found.</p>
+    </div>
+
+    <div class="booking-card card" *ngFor="let b of bookings">
+      <div class="booking-header">
+        <div class="couple-info">
+          <h3>{{ b.coupleId?.name }}</h3>
+          <span>{{ b.coupleId?.email }}</span>
+          <span *ngIf="b.coupleId?.phone">📞 {{ b.coupleId?.phone }}</span>
+          <span>📍 {{ b.coupleId?.city }}</span>
+        </div>
+        <span class="badge badge-{{ b.status }}">{{ b.status }}</span>
+      </div>
+
+      <div class="booking-body">
+        <div class="detail-row">
+          <span class="label">Service</span>
+          <span>{{ b.serviceId?.title }}</span>
+        </div>
+        <div class="detail-row">
+          <span class="label">Event Date</span>
+          <span>📅 {{ b.eventDate | date:'longDate' }}</span>
+        </div>
+        <div class="detail-row" *ngIf="b.message">
+          <span class="label">Message</span>
+          <span>{{ b.message }}</span>
+        </div>
+        <div class="detail-row" *ngIf="b.quote">
+          <span class="label">Your Quote</span>
+          <span class="quote">₹{{ b.quote | number }}</span>
+        </div>
+        <div class="detail-row">
+          <span class="label">Requested</span>
+          <span>{{ b.createdAt | date:'mediumDate' }}</span>
+        </div>
+      </div>
+
+      <!-- Actions for pending -->
+      <div class="actions" *ngIf="b.status === 'pending'">
+        <div class="quote-section" *ngIf="showQuoteFor === b._id" [formGroup]="quoteForm">
+          <input type="number" formControlName="quote" placeholder="Enter quote amount (₹)" />
+        </div>
+
+        <div class="action-buttons">
+          <button class="btn btn-outline" (click)="toggleQuote(b._id)">
+            {{ showQuoteFor === b._id ? 'Cancel Quote' : 'Add Quote' }}
+          </button>
+          <button
+            class="btn btn-primary"
+            (click)="confirm(b._id)"
+            [disabled]="actionLoading === b._id"
+          >
+            {{ actionLoading === b._id ? 'Confirming...' : 'Confirm' }}
+          </button>
+          <button
+            class="btn btn-reject"
+            (click)="reject(b._id)"
+            [disabled]="actionLoading === b._id"
+          >
+            Reject
+          </button>
+        </div>
+      </div>
+
+      <!-- Action for confirmed -->
+      <div class="actions" *ngIf="b.status === 'confirmed'">
+        <button
+          class="btn btn-primary"
+          (click)="complete(b._id)"
+          [disabled]="actionLoading === b._id"
+        >
+          {{ actionLoading === b._id ? 'Updating...' : 'Mark as Completed' }}
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

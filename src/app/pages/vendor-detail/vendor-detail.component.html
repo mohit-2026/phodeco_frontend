@@ -1,0 +1,117 @@
+<div class="detail-page" *ngIf="!loading && vendor">
+
+  <!-- Header -->
+  <div class="vendor-header card">
+    <div class="header-left">
+      <span class="category-badge">{{ vendor.category }}</span>
+      <h1>{{ vendor.businessName }}</h1>
+      <p class="city">📍 {{ vendor.city }}</p>
+      <p class="bio">{{ vendor.bio }}</p>
+
+      <div class="meta">
+        <span class="stars" *ngIf="vendor.avgRating">
+          {{ getStars(vendor.avgRating) }}
+          <strong>{{ vendor.avgRating }}</strong>
+          ({{ vendor.reviewCount }} reviews)
+        </span>
+        <span class="no-rating" *ngIf="!vendor.avgRating">No reviews yet</span>
+
+        <span class="price" *ngIf="vendor.priceRange?.min">
+          ₹{{ vendor.priceRange.min | number }} — ₹{{ vendor.priceRange.max | number }}
+        </span>
+      </div>
+    </div>
+
+    <!-- Portfolio -->
+    <div class="portfolio" *ngIf="vendor.portfolioUrls?.length">
+      <img
+        *ngFor="let url of vendor.portfolioUrls | slice:0:3"
+        [src]="url"
+        alt="Portfolio"
+      />
+    </div>
+  </div>
+
+  <!-- Services -->
+  <section class="section">
+    <h2>Services Offered</h2>
+
+    <div class="services-grid" *ngIf="services.length">
+      <div
+        class="service-card card"
+        *ngFor="let service of services"
+        [class.selected]="selectedService?._id === service._id"
+        (click)="selectService(service)"
+      >
+        <h3>{{ service.title }}</h3>
+        <p>{{ service.description }}</p>
+        <div class="service-meta">
+          <span class="price">₹{{ service.priceFrom | number }} — ₹{{ service.priceTo | number }}</span>
+          <span class="duration" *ngIf="service.duration">⏱ {{ service.duration }}</span>
+        </div>
+        <button class="btn btn-primary" (click)="selectService(service)">Book This</button>
+      </div>
+    </div>
+
+    <p class="empty" *ngIf="!services.length">No services listed yet.</p>
+  </section>
+
+  <!-- Booking Form -->
+  <section class="section booking-section" *ngIf="showBookingForm && selectedService">
+    <div class="card">
+      <h2>Book — {{ selectedService.title }}</h2>
+      <p class="sub">Fill in your event details and send a request to the vendor.</p>
+
+      <form [formGroup]="bookingForm" (ngSubmit)="submitBooking()">
+        <div class="field">
+          <label>Event Date</label>
+          <input type="date" formControlName="eventDate" [min]="getTodayDate()" />
+        </div>
+
+        <div class="field">
+          <label>Message to Vendor (optional)</label>
+          <textarea formControlName="message" rows="3" placeholder="Tell the vendor about your event..."></textarea>
+        </div>
+
+        <p class="success" *ngIf="bookingSuccess">{{ bookingSuccess }}</p>
+        <p class="error"   *ngIf="bookingError">{{ bookingError }}</p>
+
+        <div class="form-actions">
+          <button class="btn btn-outline" type="button" (click)="showBookingForm = false">Cancel</button>
+          <button class="btn btn-primary" type="submit" [disabled]="bookingLoading">
+            {{ bookingLoading ? 'Sending...' : 'Send Booking Request' }}
+          </button>
+        </div>
+      </form>
+
+      <p class="login-hint" *ngIf="!auth.isLoggedIn()">
+        <a routerLink="/login">Login</a> to send a booking request.
+      </p>
+    </div>
+  </section>
+
+  <p class="success booking-success" *ngIf="bookingSuccess && !showBookingForm">
+    ✅ {{ bookingSuccess }}
+  </p>
+
+  <!-- Reviews -->
+  <section class="section">
+    <h2>Reviews ({{ reviews.length }})</h2>
+
+    <div class="reviews-list" *ngIf="reviews.length">
+      <div class="review-card card" *ngFor="let review of reviews">
+        <div class="review-top">
+          <span class="reviewer">{{ review.coupleId?.name }}</span>
+          <span class="stars">{{ getStars(review.rating) }}</span>
+        </div>
+        <p class="comment">{{ review.comment }}</p>
+        <span class="date">{{ review.createdAt | date:'mediumDate' }}</span>
+      </div>
+    </div>
+
+    <p class="empty" *ngIf="!reviews.length">No reviews yet. Be the first to book!</p>
+  </section>
+
+</div>
+
+<div class="loading" *ngIf="loading">Loading vendor...</div>

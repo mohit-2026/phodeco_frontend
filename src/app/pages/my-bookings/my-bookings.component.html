@@ -1,0 +1,83 @@
+<div class="bookings-page">
+  <div class="page-header">
+    <h1>My Bookings</h1>
+    <p>Track all your wedding vendor booking requests</p>
+  </div>
+
+  <div class="loading" *ngIf="loading">Loading your bookings...</div>
+  <p class="error" *ngIf="error">{{ error }}</p>
+
+  <div class="bookings-list" *ngIf="!loading">
+
+    <div class="empty-state" *ngIf="bookings.length === 0">
+      <div class="empty-icon">📋</div>
+      <h3>No bookings yet</h3>
+      <p>Start by browsing vendors and sending a booking request</p>
+      <button class="btn btn-primary" routerLink="/vendors">Browse Vendors</button>
+    </div>
+
+    <div class="booking-card card" *ngFor="let booking of bookings">
+      <div class="booking-header">
+        <div class="vendor-info">
+          <h3 (click)="goToVendor(booking.vendorId?._id)" class="vendor-name">
+            {{ booking.vendorId?.businessName }}
+          </h3>
+          <span class="category">{{ booking.vendorId?.category }}</span>
+          <span class="city">📍 {{ booking.vendorId?.city }}</span>
+        </div>
+        <span class="badge badge-{{ booking.status }}">{{ booking.status }}</span>
+      </div>
+
+      <div class="booking-body">
+        <div class="detail-row">
+          <span class="label">Service</span>
+          <span>{{ booking.serviceId?.title }}</span>
+        </div>
+
+        <div class="detail-row">
+          <span class="label">Event Date</span>
+          <span>{{ booking.eventDate | date:'longDate' }}</span>
+        </div>
+
+        <div class="detail-row" *ngIf="booking.quote">
+          <span class="label">Quoted Price</span>
+          <span class="quote">₹{{ booking.quote | number }}</span>
+        </div>
+
+        <div class="detail-row" *ngIf="booking.message">
+          <span class="label">Your Message</span>
+          <span>{{ booking.message }}</span>
+        </div>
+
+        <div class="detail-row">
+          <span class="label">Requested On</span>
+          <span>{{ booking.createdAt | date:'mediumDate' }}</span>
+        </div>
+      </div>
+
+      <div class="booking-footer">
+        <div class="status-info">
+          <span *ngIf="booking.status === 'pending'" class="hint">
+            ⏳ Waiting for vendor to confirm
+          </span>
+          <span *ngIf="booking.status === 'confirmed'" class="hint confirmed">
+            ✅ Vendor confirmed your booking
+          </span>
+          <span *ngIf="booking.status === 'rejected'" class="hint rejected">
+            ❌ Vendor could not accommodate your request
+          </span>
+          <span *ngIf="booking.status === 'completed'" class="hint completed">
+            🎉 Event completed
+          </span>
+        </div>
+
+        <button
+          class="btn btn-outline"
+          (click)="goToVendor(booking.vendorId?._id)"
+        >
+          View Vendor
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,111 @@
+<div class="search-page">
+
+  <!-- Hero -->
+  <div class="hero">
+    <h1>Find Your Perfect Wedding Vendors</h1>
+    <p>Browse verified photographers, caterers, decorators and more across India</p>
+  </div>
+
+  <!-- Filters -->
+  <div class="card filters" [formGroup]="filterForm">
+    <div class="filter-grid">
+      <div class="field">
+        <label>Category</label>
+        <select formControlName="category">
+          <option *ngFor="let c of categories" [value]="c.value">{{ c.label }}</option>
+        </select>
+      </div>
+
+      <div class="field">
+        <label>City</label>
+        <input type="text" formControlName="city" placeholder="e.g. Bangalore" />
+      </div>
+
+      <div class="field">
+        <label>Min Rating</label>
+        <select formControlName="minRating">
+          <option value="">Any Rating</option>
+          <option value="3">3+ Stars</option>
+          <option value="4">4+ Stars</option>
+          <option value="4.5">4.5+ Stars</option>
+        </select>
+      </div>
+
+      <div class="field">
+        <label>Min Price (₹)</label>
+        <input type="number" formControlName="minPrice" placeholder="e.g. 10000" />
+      </div>
+
+      <div class="field">
+        <label>Max Price (₹)</label>
+        <input type="number" formControlName="maxPrice" placeholder="e.g. 100000" />
+      </div>
+
+      <div class="field btn-field">
+        <button class="btn btn-primary" (click)="search()">Search</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Results -->
+  <div class="results-header" *ngIf="!loading">
+    <p>{{ total }} vendors found</p>
+  </div>
+
+  <div class="loading" *ngIf="loading">Loading vendors...</div>
+  <p class="error" *ngIf="error">{{ error }}</p>
+
+  <div class="vendor-grid" *ngIf="!loading">
+    <div
+      class="vendor-card card"
+      *ngFor="let vendor of vendors"
+      (click)="goToVendor(vendor._id)"
+    >
+      <!-- Portfolio image or placeholder -->
+      <div class="vendor-img">
+        <img
+          *ngIf="vendor.portfolioUrls?.length"
+          [src]="vendor.portfolioUrls[0]"
+          alt="{{ vendor.businessName }}"
+        />
+        <div class="img-placeholder" *ngIf="!vendor.portfolioUrls?.length">
+          📷
+        </div>
+      </div>
+
+      <div class="vendor-info">
+        <div class="vendor-top">
+          <span class="category-badge">{{ getCategoryLabel(vendor.category) }}</span>
+          <span class="city">📍 {{ vendor.userId?.city || vendor.city }}</span>
+        </div>
+
+        <h3>{{ vendor.businessName }}</h3>
+        <p class="bio">{{ vendor.bio | slice:0:80 }}{{ vendor.bio?.length > 80 ? '...' : '' }}</p>
+
+        <div class="vendor-bottom">
+          <span class="stars" [class.no-rating]="!vendor.avgRating">
+            {{ vendor.avgRating ? getStars(vendor.avgRating) : 'No reviews yet' }}
+            <span *ngIf="vendor.avgRating" class="rating-num">{{ vendor.avgRating }}</span>
+          </span>
+          <span class="price" *ngIf="vendor.priceRange?.min">
+            ₹{{ vendor.priceRange.min | number }} — ₹{{ vendor.priceRange.max | number }}
+          </span>
+        </div>
+      </div>
+    </div>
+
+    <div class="empty" *ngIf="vendors.length === 0">
+      <p>No vendors found. Try different filters.</p>
+    </div>
+  </div>
+
+  <!-- Pagination -->
+  <div class="pagination" *ngIf="pages > 1">
+    <button
+      *ngFor="let p of pageArray"
+      [class.active]="p === currentPage"
+      (click)="search(p)"
+    >{{ p }}</button>
+  </div>
+
+</div>

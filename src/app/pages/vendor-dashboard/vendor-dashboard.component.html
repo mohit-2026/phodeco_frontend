@@ -1,0 +1,88 @@
+<div class="dashboard">
+
+  <!-- No profile yet -->
+  <div class="card setup-card" *ngIf="!hasProfile && !loading">
+    <h2>Welcome! Let's set up your profile 👋</h2>
+    <p>Create your vendor profile to start receiving bookings from couples.</p>
+    <button class="btn btn-primary" routerLink="/vendor/profile">Create Profile</button>
+  </div>
+
+  <ng-container *ngIf="hasProfile && vendor">
+
+    <!-- Header -->
+    <div class="dash-header">
+      <div>
+        <h1>Welcome, {{ vendor.businessName }} 👋</h1>
+        <p class="sub">{{ vendor.category | titlecase }} · {{ vendor.city }}</p>
+      </div>
+      <span class="verified" *ngIf="vendor.isVerified">✅ Verified</span>
+      <span class="unverified" *ngIf="!vendor.isVerified">⏳ Pending verification</span>
+    </div>
+
+    <!-- Stats -->
+    <div class="stats-grid">
+      <div class="stat-card card">
+        <span class="stat-num">{{ stats.total }}</span>
+        <span class="stat-label">Total Bookings</span>
+      </div>
+      <div class="stat-card card">
+        <span class="stat-num pending">{{ stats.pending }}</span>
+        <span class="stat-label">Pending</span>
+      </div>
+      <div class="stat-card card">
+        <span class="stat-num confirmed">{{ stats.confirmed }}</span>
+        <span class="stat-label">Confirmed</span>
+      </div>
+      <div class="stat-card card">
+        <span class="stat-num completed">{{ stats.completed }}</span>
+        <span class="stat-label">Completed</span>
+      </div>
+    </div>
+
+    <!-- Rating -->
+    <div class="card rating-card" *ngIf="vendor.avgRating">
+      <span class="stars">★ {{ vendor.avgRating }}</span>
+      <span class="review-count">from {{ vendor.reviewCount }} reviews</span>
+    </div>
+
+    <!-- Quick links -->
+    <div class="quick-links">
+      <div class="card quick-card" routerLink="/vendor/bookings">
+        <span class="icon">📋</span>
+        <span>Manage Bookings</span>
+      </div>
+      <div class="card quick-card" routerLink="/vendor/services">
+        <span class="icon">🎯</span>
+        <span>Manage Services</span>
+      </div>
+      <div class="card quick-card" routerLink="/vendor/profile">
+        <span class="icon">✏️</span>
+        <span>Edit Profile</span>
+      </div>
+    </div>
+
+    <!-- Recent bookings -->
+    <div class="section">
+      <div class="section-header">
+        <h2>Recent Bookings</h2>
+        <a routerLink="/vendor/bookings">View all</a>
+      </div>
+
+      <div class="recent-list" *ngIf="recentBookings.length">
+        <div class="recent-item card" *ngFor="let b of recentBookings">
+          <div class="item-left">
+            <span class="couple-name">{{ b.coupleId?.name }}</span>
+            <span class="service-name">{{ b.serviceId?.title }}</span>
+            <span class="event-date">📅 {{ b.eventDate | date:'mediumDate' }}</span>
+          </div>
+          <span class="badge badge-{{ b.status }}">{{ b.status }}</span>
+        </div>
+      </div>
+
+      <p class="empty" *ngIf="!recentBookings.length">No bookings yet.</p>
+    </div>
+
+  </ng-container>
+
+  <div class="loading" *ngIf="loading">Loading dashboard...</div>
+</div>

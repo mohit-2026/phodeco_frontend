@@ -1,0 +1,57 @@
+<div class="profile-page">
+  <div class="page-header">
+    <h1>{{ hasProfile ? 'Edit Profile' : 'Create Your Profile' }}</h1>
+    <p>{{ hasProfile ? 'Update your business details' : 'Set up your vendor profile to start receiving bookings' }}</p>
+  </div>
+
+  <div class="loading" *ngIf="loading">Loading profile...</div>
+
+  <div class="card form-card" *ngIf="!loading">
+    <form [formGroup]="form" (ngSubmit)="submit()">
+
+      <div class="field">
+        <label>Business Name *</label>
+        <input type="text" formControlName="businessName" placeholder="e.g. Ravi Photography Studio" />
+      </div>
+
+      <div class="form-row">
+        <div class="field">
+          <label>Category *</label>
+          <select formControlName="category">
+            <option value="">Select category</option>
+            <option *ngFor="let c of categories" [value]="c">{{ c | titlecase }}</option>
+          </select>
+        </div>
+
+        <div class="field">
+          <label>City *</label>
+          <input type="text" formControlName="city" placeholder="e.g. Bangalore" />
+        </div>
+      </div>
+
+      <div class="field">
+        <label>Bio</label>
+        <textarea formControlName="bio" rows="4" placeholder="Tell couples about your experience, style, and what makes you unique..."></textarea>
+      </div>
+
+      <div class="form-row">
+        <div class="field">
+          <label>Min Price (₹)</label>
+          <input type="number" formControlName="minPrice" placeholder="e.g. 25000" />
+        </div>
+        <div class="field">
+          <label>Max Price (₹)</label>
+          <input type="number" formControlName="maxPrice" placeholder="e.g. 80000" />
+        </div>
+      </div>
+
+      <p class="success" *ngIf="success">{{ success }}</p>
+      <p class="error"   *ngIf="error">{{ error }}</p>
+
+      <button class="btn btn-primary" type="submit" [disabled]="saving">
+        {{ saving ? 'Saving...' : hasProfile ? 'Update Profile' : 'Create Profile' }}
+      </button>
+
+    </form>
+  </div>
+</div>

@@ -1,0 +1,49 @@
+<div class="auth-wrapper">
+  <div class="card auth-card">
+    <h2>Create account 🎊</h2>
+    <p class="sub">Join WedMarket to find your perfect vendors</p>
+
+    <form [formGroup]="form" (ngSubmit)="submit()">
+      <div class="field">
+        <label>Full Name</label>
+        <input type="text" formControlName="name" placeholder="Mohit Sharma" />
+      </div>
+
+      <div class="field">
+        <label>Email</label>
+        <input type="email" formControlName="email" placeholder="you@example.com" />
+      </div>
+
+      <div class="field">
+        <label>Password</label>
+        <input type="password" formControlName="password" placeholder="Min 6 characters" />
+      </div>
+
+      <div class="field">
+        <label>I am a</label>
+        <select formControlName="role">
+          <option value="couple">Couple planning a wedding</option>
+          <option value="vendor">Wedding vendor</option>
+        </select>
+      </div>
+
+      <div class="field">
+        <label>City</label>
+        <input type="text" formControlName="city" placeholder="Bangalore" />
+      </div>
+
+      <div class="field">
+        <label>Phone (optional)</label>
+        <input type="text" formControlName="phone" placeholder="+91 9999999999" />
+      </div>
+
+      <p class="error" *ngIf="error">{{ error }}</p>
+
+      <button class="btn btn-primary full" type="submit" [disabled]="loading">
+        {{ loading ? 'Creating account...' : 'Create Account' }}
+      </button>
+    </form>
+
+    <p class="footer">Already have an account? <a routerLink="/login">Login</a></p>
+  </div>
+</div>

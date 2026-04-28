@@ -1,0 +1,32 @@
+<nav class="navbar">
+  <a routerLink="/" class="brand">💍 WedMarket</a>
+
+  <div class="links">
+
+    <ng-container *ngIf="currentUser; else loggedOut">
+
+      <ng-container *ngIf="currentUser.role === 'couple'">
+        <a routerLink="/vendors" routerLinkActive="active">Find Vendors</a>
+        <a routerLink="/my-bookings" routerLinkActive="active">My Bookings</a>
+      </ng-container>
+
+      <ng-container *ngIf="currentUser.role === 'vendor'">
+        <a routerLink="/vendor/dashboard" routerLinkActive="active">Dashboard</a>
+        <a routerLink="/vendor/bookings" routerLinkActive="active">Bookings</a>
+        <a routerLink="/vendor/services" routerLinkActive="active">Services</a>
+        <a routerLink="/vendor/profile" routerLinkActive="active">Profile</a>
+      </ng-container>
+
+      <span class="user">{{ currentUser.name }}</span>
+      <button (click)="auth.logout()">Logout</button>
+
+    </ng-container>
+
+    <ng-template #loggedOut>
+      <a routerLink="/vendors" routerLinkActive="active">Find Vendors</a>
+      <a routerLink="/login" routerLinkActive="active">Login</a>
+      <a routerLink="/register" class="btn-primary">Register</a>
+    </ng-template>
+
+  </div>
+</nav>

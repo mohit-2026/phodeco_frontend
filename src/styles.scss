@@ -1,1 +1,55 @@
-/* You can add global styles to this file, and also import other style files */
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: 'Segoe UI', sans-serif;
+  background: #f9f9f9;
+  color: #333;
+}
+
+input, select, textarea {
+  width: 100%;
+  padding: 10px 14px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  outline: none;
+
+  &:focus { border-color: #c0392b; }
+}
+
+.btn {
+  padding: 10px 24px;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  cursor: pointer;
+  border: none;
+
+  &-primary { background: #c0392b; color: #fff; }
+  &-outline { background: transparent; border: 1px solid #c0392b; color: #c0392b; }
+
+  &:hover { opacity: 0.9; }
+  &:disabled { opacity: 0.5; cursor: not-allowed; }
+}
+
+.card {
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+  padding: 1.5rem;
+}
+
+.error { color: #c0392b; font-size: 0.85rem; margin-top: 4px; }
+.success { color: #27ae60; font-size: 0.85rem; margin-top: 4px; }
+
+.badge {
+  display: inline-block;
+  padding: 3px 10px;
+  border-radius: 99px;
+  font-size: 0.78rem;
+  font-weight: 600;
+
+  &-pending   { background: #fef3cd; color: #856404; }
+  &-confirmed { background: #d1e7dd; color: #0a5233; }
+  &-rejected  { background: #f8d7da; color: #842029; }
+  &-completed { background: #cfe2ff; color: #084298; }
+}/* You can add global styles to this file, and also import other style files */

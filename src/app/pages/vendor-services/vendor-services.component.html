@@ -1,0 +1,80 @@
+<div class="services-page">
+  <div class="page-header">
+    <h1>My Services</h1>
+    <button class="btn btn-primary" (click)="openAdd()">+ Add Service</button>
+  </div>
+
+  <p class="success" *ngIf="success && !showForm">{{ success }}</p>
+
+  <!-- Form -->
+  <div class="card form-card" *ngIf="showForm">
+    <h2>{{ editingId ? 'Edit Service' : 'Add New Service' }}</h2>
+
+    <form [formGroup]="form" (ngSubmit)="submit()">
+      <div class="field">
+        <label>Title *</label>
+        <input type="text" formControlName="title" placeholder="e.g. Full Day Wedding Photography" />
+      </div>
+
+      <div class="field">
+        <label>Description</label>
+        <textarea formControlName="description" rows="3" placeholder="What's included in this service?"></textarea>
+      </div>
+
+      <div class="form-row">
+        <div class="field">
+          <label>Price From (₹) *</label>
+          <input type="number" formControlName="priceFrom" placeholder="e.g. 35000" />
+        </div>
+        <div class="field">
+          <label>Price To (₹)</label>
+          <input type="number" formControlName="priceTo" placeholder="e.g. 60000" />
+        </div>
+      </div>
+
+      <div class="field">
+        <label>Duration</label>
+        <input type="text" formControlName="duration" placeholder="e.g. 8 hours" />
+      </div>
+
+      <p class="error"   *ngIf="error">{{ error }}</p>
+      <p class="success" *ngIf="success && showForm">{{ success }}</p>
+
+      <div class="form-actions">
+        <button class="btn btn-outline" type="button" (click)="cancel()">Cancel</button>
+        <button class="btn btn-primary" type="submit" [disabled]="saving">
+          {{ saving ? 'Saving...' : editingId ? 'Update Service' : 'Add Service' }}
+        </button>
+      </div>
+    </form>
+  </div>
+
+  <!-- List -->
+  <div class="loading" *ngIf="loading">Loading services...</div>
+
+  <div class="services-list" *ngIf="!loading">
+    <div class="empty-state" *ngIf="services.length === 0 && !showForm">
+      <p>No services yet. Add your first service to start receiving bookings.</p>
+    </div>
+
+    <div class="service-card card" *ngFor="let s of services">
+      <div class="service-header">
+        <div>
+          <h3>{{ s.title }}</h3>
+          <p class="desc" *ngIf="s.description">{{ s.description }}</p>
+        </div>
+        <span class="inactive-badge" *ngIf="!s.isActive">Inactive</span>
+      </div>
+
+      <div class="service-meta">
+        <span class="price">₹{{ s.priceFrom | number }} — ₹{{ s.priceTo | number }}</span>
+        <span class="duration" *ngIf="s.duration">⏱ {{ s.duration }}</span>
+      </div>
+
+      <div class="service-actions">
+        <button class="btn btn-outline" (click)="openEdit(s)">Edit</button>
+        <button class="btn btn-reject" (click)="delete(s._id)">Delete</button>
+      </div>
+    </div>
+  </div>
+</div>

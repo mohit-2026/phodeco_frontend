@@ -1,0 +1,25 @@
+.profile-page { padding-bottom: 3rem; }
+
+.page-header {
+  margin-bottom: 1.5rem;
+  h1 { font-size: 1.6rem; margin-bottom: 0.25rem; }
+  p  { color: #888; font-size: 0.9rem; }
+}
+
+.form-card { max-width: 680px; }
+
+.field {
+  margin-bottom: 1.25rem;
+  label { display: block; font-size: 0.88rem; margin-bottom: 6px; color: #555; }
+  textarea { resize: vertical; }
+}
+
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+
+  @media (max-width: 500px) { grid-template-columns: 1fr; }
+}
+
+.loading { text-align: center; padding: 3rem; color: #888; }

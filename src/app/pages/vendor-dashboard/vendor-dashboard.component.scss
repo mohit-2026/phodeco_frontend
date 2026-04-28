@@ -1,0 +1,113 @@
+.dashboard { padding-bottom: 3rem; }
+
+.setup-card {
+  text-align: center;
+  padding: 3rem;
+  h2 { margin-bottom: 0.5rem; }
+  p  { color: #888; margin-bottom: 1.5rem; }
+}
+
+.dash-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+
+  h1 { font-size: 1.6rem; margin-bottom: 0.25rem; }
+  .sub { color: #888; font-size: 0.9rem; }
+
+  .verified   { color: #27ae60; font-weight: 600; font-size: 0.9rem; }
+  .unverified { color: #e67e22; font-weight: 600; font-size: 0.9rem; }
+}
+
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+
+  @media (max-width: 600px) { grid-template-columns: repeat(2, 1fr); }
+}
+
+.stat-card {
+  text-align: center;
+  padding: 1.25rem;
+
+  .stat-num {
+    display: block;
+    font-size: 2rem;
+    font-weight: 700;
+    margin-bottom: 0.25rem;
+
+    &.pending   { color: #e67e22; }
+    &.confirmed { color: #27ae60; }
+    &.completed { color: #2980b9; }
+  }
+
+  .stat-label { font-size: 0.85rem; color: #888; }
+}
+
+.rating-card {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+
+  .stars { font-size: 1.3rem; color: #f39c12; font-weight: 700; }
+  .review-count { color: #888; font-size: 0.9rem; }
+}
+
+.quick-links {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem;
+  margin-bottom: 2rem;
+
+  @media (max-width: 600px) { grid-template-columns: 1fr; }
+}
+
+.quick-card {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  cursor: pointer;
+  font-weight: 500;
+  transition: transform 0.2s;
+
+  &:hover { transform: translateY(-2px); }
+  .icon { font-size: 1.5rem; }
+}
+
+.section {
+  .section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+
+    h2 { font-size: 1.2rem; }
+    a  { color: #c0392b; font-size: 0.9rem; text-decoration: none; }
+  }
+}
+
+.recent-list { display: flex; flex-direction: column; gap: 0.75rem; }
+
+.recent-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.75rem 1rem;
+
+  .item-left {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+
+    .couple-name  { font-weight: 600; font-size: 0.95rem; }
+    .service-name { font-size: 0.85rem; color: #666; }
+    .event-date   { font-size: 0.82rem; color: #aaa; }
+  }
+}
+
+.empty   { color: #aaa; font-size: 0.9rem; }
+.loading { text-align: center; padding: 3rem; color: #888; }
