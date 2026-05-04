@@ -1,10 +1,10 @@
 {
   "name": "client",
   "version": "0.0.0",
- "scripts": {
+"scripts": {
   "ng": "ng",
   "start": "ng serve",
-  "build": "ng build --prod",
+  "build": "NODE_OPTIONS=--openssl-legacy-provider ng build --prod",
   "test": "ng test",
   "lint": "ng lint",
   "e2e": "ng e2e"
