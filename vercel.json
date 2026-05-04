@@ -1,0 +1,8 @@
+{
+  "buildCommand": "NODE_OPTIONS=--openssl-legacy-provider ng build --prod",
+  "outputDirectory": "dist/client",
+  "installCommand": "npm install",
+  "rewrites": [
+    { "source": "/(.*)", "destination": "/index.html" }
+  ]
+}
